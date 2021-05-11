@@ -6,7 +6,7 @@
 
 # Setup
 1. If you do not have an Azure ML workspace, create an Azure ML workspace https://docs.microsoft.com/en-us/azure/machine-learning/how-to-manage-workspace?tabs=azure-portal#create-a-workspace
-2. Run Jupyter notebooks in your workspace: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-run-jupyter-notebooks
+2. Run Jupyter Notebooks in your workspace: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-run-jupyter-notebooks
 3. Create GPU compute instance (NVIDIA Tesla V100 Recommended) and click start compute
 4. Clone this repository and install required packages:
 ```
