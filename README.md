@@ -15,7 +15,7 @@ cd Prunetrain-API
 ```
 5. Running experiments using Azure CLI:
 * Connect Visual Studio Code through compute instance
-* Create a supporting environment on Azure(Conda_dependencies.ymal and azureml_environment.json)
+* Create a supporting environment on Azure 
 ```
 az ml environment register envs
 ```
@@ -23,7 +23,7 @@ az ml environment register envs
 ```
 az ml job create run_training.yml
 ```
-* The experiement results will show up in experiments under Asset in workspace portal.
+* The experiement results will show up in experiments under Asset in workspace portal
 
 # Training Examples
 
