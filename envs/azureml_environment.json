@@ -1,6 +1,6 @@
 {
-    "name": "test_env_dh",
-    "version": "2",
+    "name": "test_env",
+    "version": "1",
     "environmentVariables": {
         "NCCL_TREE_THRESHOLD": "0"
     },
