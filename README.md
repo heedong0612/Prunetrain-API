@@ -2,10 +2,11 @@
 
 # Prerequisites
 1. An Azure subscription. 
+2. A terminal and Python >= 3.6.2 and pip >=20.2.4
 
 # Setup
 Clone this repository and install required packages:
-```
+```sh
 git clone git@github.com:heedong0612/Prunetrain-API.git
 cd Prunetrain-API
 ```
