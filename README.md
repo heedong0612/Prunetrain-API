@@ -5,12 +5,25 @@
 2. A terminal and Python >= 3.6.2 and pip >=20.2.4
 
 # Setup
-Clone this repository and install required packages:
-```sh
+1. If you do not have an Azure ML workspace, create an Azure ML workspace https://docs.microsoft.com/en-us/azure/machine-learning/how-to-manage-workspace?tabs=azure-portal#create-a-workspace
+2. Run Jupyter notebooks in your workspace: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-run-jupyter-notebooks
+3. Create GPU compute instance (NVIDIA Tesla V100 Recommended) and click start compute
+4. Clone this repository and install required packages:
+```
 git clone git@github.com:heedong0612/Prunetrain-API.git
 cd Prunetrain-API
 ```
-
+5. Running experiments using Azure CLI:
+* Connect Visual Studio Code through compute instance
+* Create a supporting environment on Azure(Conda_dependencies.ymal and azureml_environment.json)
+```
+az ml environment register envs
+```
+* Run experiement with command
+```
+az ml job create run_training.yml
+```
+* The experiement results will show up in experiments under Asset in workspace portal.
 
 # Training Examples
 
