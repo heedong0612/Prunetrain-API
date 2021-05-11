@@ -4,6 +4,12 @@
 1. An Azure subscription. 
 
 # Setup
+Clone this repository and install required packages:
+```
+git clone git@github.com:heedong0612/Prunetrain-API.git
+cd Prunetrain-API
+```
+
 
 # Training Examples
 
