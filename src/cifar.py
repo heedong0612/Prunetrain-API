@@ -32,6 +32,7 @@ import torch.utils.data as data
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 import models.cifar as models
+from torch.cuda.amp import autocast, GradScaler
 
 from utils import Logger, AverageMeter, accuracy, mkdir_p, savefig
 from custom import _makeSparse, _genDenseModel, _DataParallel
@@ -77,6 +78,7 @@ parser.add_argument('-e', '--evaluate', dest='evaluate', action='store_true',
                     help='evaluate model on validation set')
 parser.add_argument('--gpu-id', default='0', type=str,
                     help='id(s) for CUDA_VISIBLE_DEVICES')
+parser.add_argument('--tensorcores', default=False, type=bool, help='enable mixed precision. this will increase batch size 2x')
 
 # PruneTrain
 parser.add_argument('--schedule-exp', type=int, default=0, help='Exponential LR decay.')
@@ -161,10 +163,17 @@ def main():
         num_classes = 100
 
     trainset = dataloader(root='./dataset/data/torch', train=True, download=True, transform=transform_train)
-    trainloader = data.DataLoader(trainset, 
-                                batch_size=args.train_batch, 
-                                shuffle=True, 
-                                num_workers=args.workers)
+    
+    if args.tensorcores:
+        trainloader = data.DataLoader(trainset, 
+                                    batch_size=args.train_batch * 2, 
+                                    shuffle=True, 
+                                    num_workers=args.workers)
+    else:
+        trainloader = data.DataLoader(trainset, 
+                                    batch_size=args.train_batch, 
+                                    shuffle=True, 
+                                    num_workers=args.workers)
 
     testset = dataloader(root='./dataset/data/torch', train=False, download=False, transform=transform_test)
     testloader = data.DataLoader(testset, batch_size=args.test_batch, shuffle=False, num_workers=args.workers)
@@ -296,8 +305,15 @@ def train(trainloader, model, criterion, optimizer, epoch, use_cuda):
             inputs, targets = inputs.cuda(), targets.cuda()
         inputs, targets = torch.autograd.Variable(inputs, volatile=True), torch.autograd.Variable(targets)
 
-        outputs = model(inputs)
-        loss = criterion(outputs, targets)
+        if args.tensorcores:
+            print("CORRECT!")
+            with autocast():
+                outputs = model(inputs)
+                loss = criterion(outputs, targets)
+        else:
+            print("INCORRECT!")
+            outputs = model(inputs)
+            loss = criterion(outputs, targets)
 
         # lasso penalty
         init_batch = batch_idx == 0 and epoch == 1
