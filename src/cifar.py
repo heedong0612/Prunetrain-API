@@ -78,7 +78,7 @@ parser.add_argument('-e', '--evaluate', dest='evaluate', action='store_true',
                     help='evaluate model on validation set')
 parser.add_argument('--gpu-id', default='0', type=str,
                     help='id(s) for CUDA_VISIBLE_DEVICES')
-parser.add_argument('--tensorcores', default=False, type=bool, help='enable mixed precision. this will increase batch size 2x')
+parser.add_argument('--tensorcores', default='off', type=str, help='enable mixed precision. this will increase batch size 2x')
 
 # PruneTrain
 parser.add_argument('--schedule-exp', type=int, default=0, help='Exponential LR decay.')
@@ -164,7 +164,7 @@ def main():
 
     trainset = dataloader(root='./dataset/data/torch', train=True, download=True, transform=transform_train)
     
-    if args.tensorcores:
+    if args.tensorcores == 'on':
         trainloader = data.DataLoader(trainset, 
                                     batch_size=args.train_batch * 2, 
                                     shuffle=True, 
@@ -305,13 +305,11 @@ def train(trainloader, model, criterion, optimizer, epoch, use_cuda):
             inputs, targets = inputs.cuda(), targets.cuda()
         inputs, targets = torch.autograd.Variable(inputs, volatile=True), torch.autograd.Variable(targets)
 
-        if args.tensorcores:
-            print("CORRECT!")
+        if args.tensorcores == 'on':
             with autocast():
                 outputs = model(inputs)
                 loss = criterion(outputs, targets)
         else:
-            print("INCORRECT!")
             outputs = model(inputs)
             loss = criterion(outputs, targets)
 

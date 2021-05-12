@@ -10,7 +10,7 @@ parser.add_argument('--dataset', default='imagenet', type=str,
 parser.add_argument('--model', default = 'resnet50', type=str, help='model name')
 parser.add_argument('--num-gpus', default=1, type=int, help='number of GPUs used in training')
 parser.add_argument('--penalty-ratio', default=0.2, type=float, help='group lasso regularization penalty ratio')
-parser.add_argument('--tensorcores', default=False, type=bool, help='enable mixed precision. this will increase batch size 2x')
+parser.add_argument('--tensorcores', default='off', type=str, help='enable mixed precision. this will increase batch size 2x')
 
 args = parser.parse_args()
 
@@ -75,7 +75,7 @@ for cur_epoch in range(0, cfg['base']['epochs'], cfg['pt']['sparse_interval']):
     cmd_line += ' --arch_out_dir1 '         +cfg['base']['arch_dir']
     cmd_line += ' --arch_out_dir2 '         +arch_out_dir if cfg['pt']['reconf_arch'] else ''
 
-    cmd_line += '--tensorcores '            +str(args.tensorcores) 
+    cmd_line += '--tensorcores '            +args.tensorcores
     # cmd_line += ' >> '                      +os.path.join(cfg['base']['model_dir'], cfg['base']['description'])+'.log'
 
     print (cmd_line)
