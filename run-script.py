@@ -75,7 +75,7 @@ for cur_epoch in range(0, cfg['base']['epochs'], cfg['pt']['sparse_interval']):
     cmd_line += ' --arch_out_dir1 '         +cfg['base']['arch_dir']
     cmd_line += ' --arch_out_dir2 '         +arch_out_dir if cfg['pt']['reconf_arch'] else ''
 
-    cmd_line += '--tensorcores '            +args.tensorcores
+    cmd_line += ' --tensorcores '            +args.tensorcores
     # cmd_line += ' >> '                      +os.path.join(cfg['base']['model_dir'], cfg['base']['description'])+'.log'
 
     print (cmd_line)

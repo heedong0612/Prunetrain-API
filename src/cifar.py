@@ -306,10 +306,12 @@ def train(trainloader, model, criterion, optimizer, epoch, use_cuda):
         inputs, targets = torch.autograd.Variable(inputs, volatile=True), torch.autograd.Variable(targets)
 
         if args.tensorcores == 'on':
+            print("onnnn")
             with autocast():
                 outputs = model(inputs)
                 loss = criterion(outputs, targets)
         else:
+            print("offf")
             outputs = model(inputs)
             loss = criterion(outputs, targets)
 
