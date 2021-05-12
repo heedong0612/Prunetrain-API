@@ -7,4 +7,5 @@ checkpoint
 checkpoint2
 *.yaml
 *.amltmp
+*/*.amltmp
 
