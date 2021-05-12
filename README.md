@@ -17,7 +17,7 @@ cd Prunetrain-API
 * Connect Visual Studio Code through compute instance
 * Create a supporting environment on Azure 
 ```
-az ml environment register envs
+az ml environment register -d envs
 ```
 * Run experiement with command
 ```
