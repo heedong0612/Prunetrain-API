@@ -17,11 +17,11 @@ cd Prunetrain-API
 * Connect Visual Studio Code through compute instance
 * Create a supporting environment on Azure 
 ```
-az ml environment register envs
+az ml environment register -d envs
 ```
 * Run experiement with command
 ```
-az ml job create run_training.yml
+az ml job create --file run_training.yml
 ```
 * The experiement results will show up in experiments under Asset in workspace portal
 
