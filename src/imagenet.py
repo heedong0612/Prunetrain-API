@@ -33,6 +33,7 @@ import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 import torchvision.models as models
 import models.imagenet as customized_models
+from torch.cuda.amp import autocast, GradScaler
 
 from utils import Logger, AverageMeter, accuracy, mkdir_p
 from custom import _makeSparse, _genDenseModel, _DataParallel
@@ -90,6 +91,7 @@ parser.add_argument('-e', '--evaluate', dest='evaluate', action='store_true',
 parser.add_argument('--gpu-id', default='0', type=str,
                     help='id(s) for CUDA_VISIBLE_DEVICES')
 parser.add_argument('--manualSeed', type=int, help='manual seed')
+parser.add_argument('--tensorcores', default='off', type=str, help='enable mixed precision. this will increase batch size 2x')
 
 # PruneTrain
 parser.add_argument('--schedule-exp', type=int, default=0, help='Exponential LR decay.')
@@ -176,12 +178,20 @@ def main():
     # Restrict the number of samples per class
     #train_dataset = LimitDataset(train_dataset, 200)
     
-    train_loader = torch.utils.data.DataLoader(
-        train_dataset,
-        batch_size=args.train_batch, 
-        shuffle=True,
-        num_workers=args.workers, 
-        pin_memory=True)
+    if args.tensorcores == 'on':
+        train_loader = torch.utils.data.DataLoader(
+            train_dataset,
+            batch_size=args.train_batch * 2, 
+            shuffle=True,
+            num_workers=args.workers, 
+            pin_memory=True)
+    else:
+        train_loader = torch.utils.data.DataLoader(
+            train_dataset,
+            batch_size=args.train_batch, 
+            shuffle=True,
+            num_workers=args.workers, 
+            pin_memory=True)
 
     val_loader = torch.utils.data.DataLoader(
         datasets.ImageFolder(valdir, transforms.Compose([
@@ -322,8 +332,13 @@ def train(train_loader, model, criterion, optimizer, epoch, use_cuda):
             inputs, targets = inputs.cuda(), targets.cuda()
         inputs, targets = torch.autograd.Variable(inputs), torch.autograd.Variable(targets)
 
-        outputs = model(inputs)
-        loss = criterion(outputs, targets)
+        if args.tensorcores == 'on':
+            with autocast():
+                outputs = model(inputs)
+                loss = criterion(outputs, targets)
+        else:
+            outputs = model(inputs)
+            loss = criterion(outputs, targets)
 
         # lasso penalty
         init_batch = batch_idx == 0 and epoch == 1
