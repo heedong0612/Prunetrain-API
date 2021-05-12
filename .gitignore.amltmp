@@ -1,9 +1,0 @@
-src/dataset
-TestPruningOnCifar/dataset
-*.pyc
-__pycache__
-*/__pycache__
-checkpoint
-checkpoint2
-*.yaml
-*.amltmp
