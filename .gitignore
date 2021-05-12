@@ -1,4 +1,7 @@
 src/dataset
+dataset/
+coeff/
+output/
 TestPruningOnCifar/dataset
 *.pyc
 __pycache__
