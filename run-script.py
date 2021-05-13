@@ -34,7 +34,7 @@ with open(os.path.join('configs/', cfg_file)) as f_config:
 cfg['base']['learning-rate'] = cfg['base']['learning-rate'] *args.num_gpus
 cfg['base']['train_batch']   = int(cfg['base']['train_batch']*args.num_gpus)
 if args.dataset == 'imagenet':
-    cfg['base']['learning-rate'] //= 4
+    cfg['base']['learning-rate'] /= 4
     cfg['base']['train_batch']   //= 4
 
 if not os.path.exists(cfg['base']['model_dir']):
