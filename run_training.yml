@@ -1,10 +1,10 @@
 # yaml-language-server: $schema=https://azuremlsdk2.blob.core.windows.net/latest/commandJob.schema.json
-experiment_name: autocast-test
+experiment_name: no-autocast-imagenet
 
-command: python run-script.py --data-path PLACEHOLDER --dataset cifar10 --model vgg11 --num-gpus 1 --tensorcores off
+command: command: python run-script.py --data-path ../prunetrain-copy/dataset/data/torch/ILSVRC/Data/CLS-LOC --dataset imagenet --model mobilenet --num-gpus 4
 
 code:
-  local_path: ./src
+  local_path: ./
 environment: azureml:test_env:2
 compute:
-  target: azureml:AComputeCluster1
+  target: azureml:NC6s-v3-Tesla-V100
