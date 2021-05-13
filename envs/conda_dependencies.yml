@@ -17,5 +17,4 @@ dependencies:
   - tensorboard==1.14.0
   - future==0.17.1
   - matplotlib==3.3.4
-  - PyProf
 name: azureml_fd71f2370c59f1f45a36b18b907af511
