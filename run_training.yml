@@ -5,6 +5,6 @@ command: python run-script.py --data-path PLACEHOLDER --dataset cifar10 --model 
 
 code:
   local_path: ./src
-environment: azureml:test_env:1
+environment: azureml:test_env:2
 compute:
   target: azureml:AComputeCluster1
